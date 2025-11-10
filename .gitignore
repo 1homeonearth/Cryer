@@ -1,0 +1,54 @@
+# --- GitHub's official Node.gitignore (abridged) ---
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+
+# Diagnostic reports
+report.*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage, tooling caches, deps
+coverage
+*.lcov
+.nyc_output
+.grunt
+bower_components
+node_modules/
+jspm_packages/
+.webpack/
+.parcel-cache
+.cache
+dist
+out
+build
+.npm
+.eslintcache
+.stylelintcache
+.node_repl_history
+*.tgz
+
+# dotenv
+.env
+.env.*
+!.env.example
+
+# Yarn v3
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# --- Cryer-specific extras ---
+data/
+cryer.log
