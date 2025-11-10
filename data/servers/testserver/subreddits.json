@@ -1,0 +1,18 @@
+[
+  {
+    "key": "test subreddit",
+    "subreddit": "test subreddit",
+    "rules": {
+      "cooldownHours": 24,
+      "disallowLinkInTitle": false,
+      "requirePermanentInvite": true,
+      "minBodyLength": 20
+    },
+    "post": {
+      "title": "test title",
+      "body": "default body text",
+      "flair_id": "",
+      "flair_text": ""
+    }
+  }
+]

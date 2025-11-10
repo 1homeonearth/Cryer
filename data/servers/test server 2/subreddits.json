@@ -1,0 +1,18 @@
+[
+  {
+    "key": "test subreddit",
+    "subreddit": "test subreddit",
+    "rules": {
+      "cooldownHours": 24,
+      "requirePermanentInvite": true
+    },
+    "post": {
+      "type": "self",
+      "title": "test title 2",
+      "body": "test body text 2\n\ntest url 2",
+      "url": "",
+      "flair_id": "",
+      "flair_text": ""
+    }
+  }
+]

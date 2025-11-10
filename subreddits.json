@@ -1,0 +1,47 @@
+{
+  /*
+   * Configuration for subreddits that allow Discord server promotion.
+   * Each entry defines basic posting constraints and rules derived from the
+   * community’s sidebar or rules wiki as of Nov 2025.  Adjust these values
+   * whenever subreddit policies change.  See inline comments and citations
+   * for context.
+   */
+  "AdvertiseYourServer": {
+    "subreddit": "AdvertiseYourServer",
+    "cooldownHours": 12,
+    "minBodyLength": 20,
+    "disallowLinkInTitle": true,
+    "notes": "AYS allows up to two posts per 24 hours and prohibits back‑to‑back submissions. Posts must include a body with information about the community and may not contain Discord invite links in the title. Flairs must be set correctly【398280552724022†L182-L198】."
+  },
+  "Discord_Servers_List": {
+    "subreddit": "Discord_Servers_List",
+    "cooldownHours": 24,
+    "minBodyLength": 20,
+    "requiresPermanentInvite": true,
+    "disallowNSFW": true,
+    "disallowHate": true,
+    "disallowSubstance": true,
+    "disallowWeapon": true,
+    "disallowHacks": true,
+    "notes": "Posts must promote Discord servers only. Invite links must be permanent and servers cannot be NSFW, hate‑based or related to drugs, weapons, hacks or scams. One link per day per user. Descriptions should be at least 20 characters【667237493033561†L167-L323】."
+  },
+  "DiscordServerPromos": {
+    "subreddit": "DiscordServerPromos",
+    "cooldownHours": 24,
+    "requiresPermanentInvite": true,
+    "disallowNSFW": true,
+    "disallowScam": true,
+    "disallowIDGated": true,
+    "notes": "Promotions must not be age‑gated or require ID verification. Invites must be permanent and allow moderators to join. Posts must be spaced at least 24 hours apart and cannot be spammed【714834875841878†L115-L161】."
+  },
+  "findaserver": {
+    "subreddit": "findaserver",
+    "cooldownHours": 24,
+    "minBodyLength": 20,
+    "requiresPermanentInvite": true,
+    "disallowNSFW": true,
+    "disallowScam": true,
+    "karmaRequired": 100,
+    "notes": "Only Discord servers are allowed. Posts must include a permanent invite and be at least 20 characters long. NSFW, scam, hack or invite‑reward servers are disallowed. Submissions should be limited to one per day per user and posters must have at least 100 karma【629989840270187†L110-L186】."
+  }
+}

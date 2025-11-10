@@ -1,0 +1,9 @@
+{"ts":"2025-11-10T05:16:34.350Z","level":"info","type":"session.start","serverKey":"testserver","dryRun":true}
+{"ts":"2025-11-10T05:16:34.351Z","level":"warn","type":"subreddit.invalid","serverKey":"testserver","subreddit":"test subreddit","errors":["unsupported post type"]}
+{"ts":"2025-11-10T05:16:34.351Z","level":"info","type":"session.end","serverKey":"testserver","dryRun":true,"counts":{"invalid":1}}
+{"ts":"2025-11-10T05:16:37.875Z","level":"info","type":"session.start","serverKey":"test server 2","dryRun":true}
+{"ts":"2025-11-10T05:16:37.876Z","level":"warn","type":"subreddit.invalid","serverKey":"test server 2","subreddit":"test subreddit","errors":["permanent invite link required in body"]}
+{"ts":"2025-11-10T05:16:37.876Z","level":"info","type":"session.end","serverKey":"test server 2","dryRun":true,"counts":{"invalid":1}}
+{"ts":"2025-11-10T05:16:46.600Z","level":"info","type":"session.start","serverKey":"testserver","dryRun":true}
+{"ts":"2025-11-10T05:16:46.602Z","level":"warn","type":"subreddit.invalid","serverKey":"testserver","subreddit":"test subreddit","errors":["unsupported post type"]}
+{"ts":"2025-11-10T05:16:46.602Z","level":"info","type":"session.end","serverKey":"testserver","dryRun":true,"counts":{"invalid":1}}

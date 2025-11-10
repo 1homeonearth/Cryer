@@ -1,0 +1,13 @@
+{
+  "id": "testserver",
+  "name": "testserver",
+  "defaults": {
+    "title": "test title",
+    "invite": "test url",
+    "body": "default body text",
+    "cooldownHours": 24,
+    "disallowLinkInTitle": false,
+    "requirePermanentInvite": true,
+    "minBodyLength": 20
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "test server 2",
+  "name": "test server 2",
+  "defaults": {
+    "title": "test title 2",
+    "invite": "test url 2",
+    "body": "test body text 2"
+  }
+}
