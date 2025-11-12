@@ -15,12 +15,14 @@ import {
   updateServerLastAdAt, addSchedule, listSchedules, removeSchedule
 } from './lib/store.js';
 import { log } from './lib/logger.js';
+import { resolveCallbackHost } from './lib/network.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(process.env.CRYER_DATA_DIR || './data');
 const PORT = parseInt(process.env.CRYER_PORT || '8383', 10);
 const BIND = process.env.CRYER_BIND || '127.0.0.1';
 const SHARED_KEY = process.env.CRYER_SHARED_KEY || '';
+const CALLBACK_HOST = resolveCallbackHost(BIND);
 
 const SQUIRE_NOTIFY_URL = process.env.SQUIRE_NOTIFY_URL || '';
 const SQUIRE_SHARED_KEY = process.env.SQUIRE_SHARED_KEY || '';
@@ -289,7 +291,7 @@ async function runScheduleTick() {
     if (s.whenMs <= now) {
       log.info('schedule.trigger', { id: s.id, serverKey: s.serverKey, reason: s.reason });
       try {
-        await fetch(`http://${BIND}:${PORT}/v1/advertise`, {
+        await fetch(`http://${CALLBACK_HOST}:${PORT}/v1/advertise`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-Cryer-Key': SHARED_KEY },
           body: JSON.stringify({ serverKey: s.serverKey, dryRun: false, autoScheduleIfThrottled: false })
