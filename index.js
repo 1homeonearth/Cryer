@@ -12,9 +12,10 @@ import {
   listServers, getServerPaths, readJSON, writeJSON,
   ensureServerScaffold, readServerConfig, defaultServerConfig,
   appendPostedRecord, listPostedRecords, writePostedRecords,
-  updateServerLastAdAt, addSchedule, listSchedules, removeSchedule
+  updateServerLastAdAt, addSchedule
 } from './lib/store.js';
 import { log } from './lib/logger.js';
+import { createScheduleRunner } from './lib/scheduler.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(process.env.CRYER_DATA_DIR || './data');
@@ -27,6 +28,7 @@ const SQUIRE_SHARED_KEY = process.env.SQUIRE_SHARED_KEY || '';
 
 const SERVER_ROLLING_WINDOW_MS = 24 * 3600 * 1000; // server-level throttle window
 const SCHEDULE_TICK_MS = parseInt(process.env.CRYER_SCHEDULE_TICK_MS || '60000', 10); // 60s
+const SCHEDULE_RETRY_DELAY_MS = parseInt(process.env.CRYER_SCHEDULE_RETRY_DELAY_MS || '300000', 10); // 5m default
 
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -282,26 +284,13 @@ async function runRemovalMonitorOnce() {
 }
 
 // --- background schedule runner ---
-async function runScheduleTick() {
-  const now = Date.now();
-  const list = listSchedules(DATA_DIR);
-  for (const s of list) {
-    if (s.whenMs <= now) {
-      log.info('schedule.trigger', { id: s.id, serverKey: s.serverKey, reason: s.reason });
-      try {
-        await fetch(`http://${BIND}:${PORT}/v1/advertise`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Cryer-Key': SHARED_KEY },
-          body: JSON.stringify({ serverKey: s.serverKey, dryRun: false, autoScheduleIfThrottled: false })
-        });
-      } catch (e) {
-        log.warn('schedule.trigger_error', { id: s.id, serverKey: s.serverKey, error: e.message });
-      } finally {
-        removeSchedule(DATA_DIR, s.id);
-      }
-    }
-  }
-}
+const runScheduleTick = createScheduleRunner({
+  dataDir: DATA_DIR,
+  bind: BIND,
+  port: PORT,
+  sharedKey: SHARED_KEY,
+  retryDelayMs: SCHEDULE_RETRY_DELAY_MS
+});
 
 setInterval(runRemovalMonitorOnce, MONITOR_INTERVAL_MS);
 runRemovalMonitorOnce().catch(()=>{});

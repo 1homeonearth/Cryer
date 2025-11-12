@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "cli": "node cli/cryerctl.mjs",
-    "logs": "node cli/cryerctl.mjs logs"
+    "logs": "node cli/cryerctl.mjs logs",
+    "test": "node --test"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
