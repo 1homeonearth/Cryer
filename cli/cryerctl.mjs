@@ -11,11 +11,13 @@ import {
   listQueue, enqueueTemplate, dequeueTemplate, slugifyName
 } from '../lib/store.js';
 import { listLinkFlairs } from '../lib/reddit.js';
+import { resolveCallbackHost } from '../lib/network.js';
 
 const DATA_DIR = path.resolve(process.env.CRYER_DATA_DIR || './data');
 const BIND = process.env.CRYER_BIND || '127.0.0.1';
 const PORT = process.env.CRYER_PORT || '8383';
 const KEY = process.env.CRYER_SHARED_KEY || '';
+const CALLBACK_HOST = resolveCallbackHost(BIND);
 const SQUIRE_SERVERS_URL = process.env.SQUIRE_SERVERS_URL || ''; // http://localhost:8888/internal/servers OR file://...
 const SQUIRE_SHARED_KEY = process.env.SQUIRE_SHARED_KEY || '';
 const LOG_PATH = path.resolve(process.env.CRYER_LOG_PATH || path.join(DATA_DIR, 'cryer.log'));
@@ -587,7 +589,7 @@ async function reviewQueueFlow(serverKey) {
 
 async function postNow(serverKey) {
   const { dry } = await prompts({ type: 'toggle', name: 'dry', message: 'Dry run?', initial: true, active: 'Yes', inactive: 'No' });
-  const r = await fetch(`http://${BIND}:${PORT}/v1/advertise`, {
+  const r = await fetch(`http://${CALLBACK_HOST}:${PORT}/v1/advertise`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-Cryer-Key': KEY },
     body: JSON.stringify({ serverKey, dryRun: !!dry })
@@ -598,7 +600,7 @@ async function postNow(serverKey) {
     console.log(RED(`Session throttled until ${until}`));
     const { sched } = await prompts({ type: 'toggle', name: 'sched', message: 'Schedule automatic post at that time?', initial: true, active: 'yes', inactive: 'no' });
     if (sched) {
-      const r2 = await fetch(`http://${BIND}:${PORT}/v1/schedule-advertise`, {
+      const r2 = await fetch(`http://${CALLBACK_HOST}:${PORT}/v1/schedule-advertise`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Cryer-Key': KEY },
         body: JSON.stringify({ serverKey, at: json.throttleUntil })
