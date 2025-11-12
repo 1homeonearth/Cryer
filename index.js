@@ -59,9 +59,14 @@ async function notifySquire(type, payload) {
 }
 
 // fill missing post fields from server defaults
-function withServerDefaults(serverKey, post) {
+function resolveServerDefaults(serverKey, providedDefaults) {
+  if (providedDefaults && typeof providedDefaults === 'object') return providedDefaults;
   const cfg = readServerConfig(DATA_DIR, serverKey) || defaultServerConfig(serverKey);
-  const d = cfg.defaults || {};
+  return cfg.defaults || defaultServerConfig(serverKey).defaults || {};
+}
+
+function withServerDefaults(serverKey, post, providedDefaults = null) {
+  const d = resolveServerDefaults(serverKey, providedDefaults);
   const out = { ...post };
   if (!out.title && d.title) out.title = d.title;
   if (out.type === 'self') {
@@ -123,6 +128,8 @@ app.post('/v1/advertise', auth, async (req, res) => {
   const cooldowns = readJSON(cooldownPath, {});
   const results = [];
 
+  const serverDefaults = resolveServerDefaults(serverKey, serverCfg.defaults);
+
   const token = dryRun ? null : await getToken();
 
   let postedCount = 0;
@@ -131,7 +138,7 @@ app.post('/v1/advertise', auth, async (req, res) => {
     const { subreddit } = entry;
     const rules = entry.rules || {};
     let post = entry.post || { type: 'self', title: '', body: '' };
-    post = withServerDefaults(serverKey, post);
+    post = withServerDefaults(serverKey, post, serverDefaults);
 
     // cadence: per-sub days (default 1)
     const days = Number.isFinite(rules.cooldownDays) ? rules.cooldownDays : 1;
