@@ -199,9 +199,12 @@ function defaultRules() {
   };
 }
 
-function mergeDefaults(serverKey, post) {
-  const cfg = readServerConfig(DATA_DIR, serverKey);
-  const d = cfg.defaults || defaultServerConfig(serverKey).defaults;
+function mergeDefaults(serverKey, post, providedDefaults = null) {
+  let d = providedDefaults;
+  if (!d) {
+    const cfg = readServerConfig(DATA_DIR, serverKey);
+    d = cfg?.defaults || defaultServerConfig(serverKey).defaults;
+  }
   const out = { ...post };
   if (!out.title && d.title) out.title = d.title;
   if (out.type === 'self') {
@@ -248,6 +251,9 @@ async function addSubredditFlow(serverKey) {
     initial: initialType === 'link' ? 1 : 0
   });
 
+  const cfg = readServerConfig(DATA_DIR, serverKey);
+  const serverDefaults = cfg?.defaults || defaultServerConfig(serverKey).defaults;
+
   let post = mergeDefaults(serverKey, {
     type: ptype || 'self',
     title: template?.post?.title || '',
@@ -255,7 +261,7 @@ async function addSubredditFlow(serverKey) {
     url: template?.post?.url || '',
     flair_id: template?.post?.flair_id || '',
     flair_text: template?.post?.flair_text || ''
-  });
+  }, serverDefaults);
   let rules = template?.rules ? { ...template.rules } : defaultRules();
 
   const ask = [{ type: 'text', name: 'title', message: 'Title', initial: post.title || '' }];
